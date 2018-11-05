@@ -1,0 +1,117 @@
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+
+<div id="app">
+  <h1 v-once>{{ title }}</h1>
+  <p>{{ sayHello() }} - <a v-bind:href="link">{{ link }}</a></p>
+  <p v-html="finishedLink"></p>
+  <button v-on:click="increase(2, $event)">Incraese</button>
+  <button v-on:click="counter++">Incraese</button>
+  <p>{{ counter *2 > 10 ? "Greater than 10" : "Smaller than 10" }}</p>
+
+  <p v-on:mousemove="updateCoor">Coordinates {{ x }} / {{ y }} -
+    <span v-on:mousemove.stop="">DEAD SPOT</span>
+  </p>
+
+  <input type="text" v-on:keyup.enter.space="alertFunc">
+
+  <input type="text" v-model="name">
+
+  <p>{{ name }}</p>
+
+  <div class="demo" @click="attachedClass = !attachedClass" :class="divClasses"></div>
+
+  <div class="demo" :class="color"></div>
+  <input type="text" v-model="color">
+
+  <p v-if="show">You see me</p>
+  <p v-else>Now you can see me</p>
+  <template v-if="show">
+  <h1>In template</h1>
+    <p>ASd</p>
+  </template>
+  <p v-show="show">Do you see me?</p>
+  <button @click="show = !show">Show</button>
+
+  <hr>
+
+  <ul>
+    <li v-for="(ingredient, i) in ingredients">{{ ingredient }} ({{ i }})</li>
+  </ul>
+
+  <hr>
+
+  <ul>
+    <li v-for="person in persons">
+      <div v-for="(value, key, index) in person">
+        {{ key }} : {{ value }} ({{ index }})
+      </div>
+    </li>
+  </ul>
+  <hr>
+  <ul>
+    <li v-for="n in 10">{{ n }}</li>
+  </ul>
+</div>
+
+
+<!-- ********************************************* -->
+
+new Vue({
+	el: '#app',
+  data: {
+		title: 'Hello world',
+    link: 'http://google.com',
+    finishedLink: '<a href="http://google.com">asd</a>',
+    counter: 0,
+    x: 0,
+    y: 0,
+    name: 'Max',
+    attachedClass: false,
+    color: 'red',
+    show: true,
+    ingredients: ['meat', 'salad', 'onion'],
+    persons: [
+    	{name: 'Max', age: 27, color: 'red'},
+      {name: 'Beka', age: 75, color: 'blue'}
+    ]
+  },
+  computed: {
+  	divClasses: function() {
+    	return {
+      	red: this.attachedClass,
+        blue: !this.attachedClass
+      };
+    }
+  },
+  methods: {
+    sayHello: function() {
+    	this.title = 'Hello!';
+    	return 'Hello!';
+		},
+    increase: function(step, event) {
+			this.counter += step;
+		},
+    updateCoor: function(event) {
+			this.x = event.clientX;
+      this.y = event.clientY;
+    },
+    alertFunc: function(event) {
+    	alert(event.target.value);
+    }
+  }
+});
+
+<!-- ********************************************* -->
+
+.demo {
+  width: 30px;
+  height: 30px;
+  background-color: gray;
+}
+
+.red {
+  background-color: red;
+}
+.blue {
+  background-color: blue;
+}
